@@ -1,5 +1,4 @@
 import os
-import src.models
 
 from sqlmodel import SQLModel, Session, create_engine
 from dotenv import load_dotenv

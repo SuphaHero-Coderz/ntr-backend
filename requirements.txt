@@ -5,8 +5,8 @@ redis
 python-dotenv
 passlib
 sqlalchemy
-pyjwt
 psycopg2-binary
+fastapi-jwt-auth
 python-multipart
 cryptography
 sqlmodel
