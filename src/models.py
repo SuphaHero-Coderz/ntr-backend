@@ -1,9 +1,10 @@
-import  passlib.hash as _hash
+import passlib.hash as _hash
 import enum
 
 from sqlmodel import Field, SQLModel, Relationship
 from typing import Optional, List
-from datetime import datetime 
+from datetime import datetime
+
 
 class OrderStatus(enum.Enum):
     ordering = 0
@@ -11,8 +12,10 @@ class OrderStatus(enum.Enum):
     delivery = 2
     complete = 3
 
+
 class InventoryItem(enum.Enum):
     default_token = 0
+
 
 class User(SQLModel, table=True):
     __tablename__: str = "users"
@@ -25,6 +28,7 @@ class User(SQLModel, table=True):
     def verify_password(self, password: str) -> bool:
         return _hash.bcrypt.verify(password, self.hashed_password)
 
+
 class Order(SQLModel, table=True):
     __tablename__: str = "orders"
 
@@ -36,6 +40,7 @@ class Order(SQLModel, table=True):
     delivery_status: bool
     status: OrderStatus
 
+
 class Payment(SQLModel, table=True):
     __tablename__: str = "payments"
 
@@ -44,7 +49,8 @@ class Payment(SQLModel, table=True):
     payment_amount: float
     timestamp: datetime
 
+
 class Inventory(SQLModel, table=True):
     __tablename__: str = "inventory"
-    token_type: InventoryItem 
+    token_type: InventoryItem
     amount: int

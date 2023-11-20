@@ -10,9 +10,7 @@ _services.create_database()
 
 load_dotenv()
 
-origins = [
-    "http://localhost:3000"
-]
+origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
