@@ -1,0 +1,12 @@
+fastapi
+pydantic
+uvicorn
+redis
+python-dotenv
+passlib
+sqlalchemy
+pyjwt
+psycopg2-binary
+python-multipart
+cryptography
+sqlmodel
