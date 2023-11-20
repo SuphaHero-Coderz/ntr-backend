@@ -1,12 +1,13 @@
+import src.db_services as _services
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import src.db_services as _services
-
 app = FastAPI()
 
 _services.create_database()
+_services.populate_inventory()
 
 load_dotenv()
 

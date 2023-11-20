@@ -23,7 +23,7 @@ class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
     hashed_password: str
-    orders: List["Order"] = Relationship(back_populates="orders")
+    orders: List["Order"] = Relationship(back_populates="user")
 
     def verify_password(self, password: str) -> bool:
         return _hash.bcrypt.verify(password, self.hashed_password)
@@ -33,7 +33,8 @@ class Order(SQLModel, table=True):
     __tablename__: str = "orders"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: int
+    user_id: int = Field(default=None, foreign_key="users.id")
+    user: Optional[User] = Relationship(back_populates="orders")
     num_tokens: int
     payment_id: int
     payment_status: bool
@@ -45,12 +46,12 @@ class Payment(SQLModel, table=True):
     __tablename__: str = "payments"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id = Field(default=None, foreign_key="users.id")
+    user_id: int = Field(default=None, foreign_key="users.id")
     payment_amount: float
     timestamp: datetime
 
 
 class Inventory(SQLModel, table=True):
     __tablename__: str = "inventory"
-    token_type: InventoryItem
+    token_type: InventoryItem = Field(default=None, primary_key=True)
     amount: int
