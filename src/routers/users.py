@@ -48,10 +48,10 @@ async def register(
     if db_user:
         raise HTTPException(status_code=400, detail="Username already exists")
 
-    await _services.create_user(user, session)
+    created_user = await _services.create_user(user, session)
 
-    access_token = Authorize.create_access_token(subject=user.username)
-    refresh_token = Authorize.create_refresh_token(subject=user.username)
+    access_token = Authorize.create_access_token(subject=created_user.id)
+    refresh_token = Authorize.create_refresh_token(subject=created_user.id)
 
     Authorize.set_access_cookies(access_token)
     Authorize.set_refresh_cookies(refresh_token)
