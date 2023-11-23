@@ -2,11 +2,9 @@ import src.database as _database
 
 from passlib.hash import bcrypt
 from sqlmodel import Session, select
-from src.database import engine
-from src.models import User, Inventory, InventoryItem
+from src.models import User
 from src.routers.users import UserCredentials
 
-DEFAULT_TOKEN_AMOUNT = 100
 
 """
 DATABASE ZONE
@@ -18,19 +16,6 @@ def create_database() -> None:
     Initializes the database engine
     """
     _database.init_db()
-
-
-def populate_inventory() -> None:
-    """
-    Populates the inventory table with tokens
-    """
-    with Session(engine) as session:
-        tokens = [
-            Inventory(token_type=token_type.value, amount=DEFAULT_TOKEN_AMOUNT)
-            for token_type in InventoryItem
-        ]
-        session.add_all(tokens)
-        session.commit()
 
 
 """
@@ -49,7 +34,9 @@ async def create_user(user: UserCredentials, session: Session) -> User:
     Returns:
         User: created user
     """
-    user_obj = User(username=user.username, hashed_password=bcrypt.hash(user.password))
+    user_obj = User(
+        username=user.username, hashed_password=bcrypt.hash(user.password), orders=[]
+    )
 
     session.add(user_obj)
     session.commit()

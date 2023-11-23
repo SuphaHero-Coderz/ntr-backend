@@ -10,7 +10,6 @@ from fastapi_jwt_auth.exceptions import AuthJWTException
 app = FastAPI()
 
 _services.create_database()
-_services.populate_inventory()
 
 load_dotenv()
 

@@ -5,15 +5,11 @@ from sqlmodel import Session
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi_jwt_auth import AuthJWT
 from pydantic import BaseModel
+from src.models import UserCredentials
 
 # Reference: IndominusByte's JWT In Cookies
 
 router = APIRouter(tags=["users"])
-
-
-class UserCredentials(BaseModel):
-    username: str
-    password: str
 
 
 class Settings(BaseModel):

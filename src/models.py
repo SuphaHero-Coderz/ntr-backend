@@ -7,14 +7,15 @@ from datetime import datetime
 
 
 class OrderStatus(enum.Enum):
-    ordering = 0
+    pending = 0
     payment = 1
     delivery = 2
     complete = 3
 
 
-class InventoryItem(enum.Enum):
-    default_token = 0
+class UserCredentials:
+    username: str
+    password: str
 
 
 class User(SQLModel, table=True):
@@ -29,7 +30,7 @@ class User(SQLModel, table=True):
         return _hash.bcrypt.verify(password, self.hashed_password)
 
 
-class Order(SQLModel, table=True):
+class Order(SQLModel):
     __tablename__: str = "orders"
 
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -40,18 +41,13 @@ class Order(SQLModel, table=True):
     payment_status: bool
     delivery_status: bool
     status: OrderStatus
+    created_at: datetime
 
 
-class Payment(SQLModel, table=True):
+class Payment(SQLModel):
     __tablename__: str = "payments"
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(default=None, foreign_key="users.id")
     payment_amount: float
     timestamp: datetime
-
-
-class Inventory(SQLModel, table=True):
-    __tablename__: str = "inventory"
-    token_type: InventoryItem = Field(default=None, primary_key=True)
-    amount: int
