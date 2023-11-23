@@ -8,13 +8,15 @@ from typing import Dict
 
 load_dotenv()
 
+
 class Queue(Enum):
     order_queue = f'queue:{os.getenv("ORDER_QUEUE_NAME")}'
 
-class RedisResource:
-    REDIS_QUEUE_LOCATION = os.getenv('REDIS_QUEUE', 'localhost')
 
-    host, *port_info = REDIS_QUEUE_LOCATION.split(':')
+class RedisResource:
+    REDIS_QUEUE_LOCATION = os.getenv("REDIS_QUEUE", "localhost")
+
+    host, *port_info = REDIS_QUEUE_LOCATION.split(":")
     port = tuple()
 
     if port_info:
@@ -22,7 +24,6 @@ class RedisResource:
         port = (int(port),)
 
     conn = redis.Redis(host=host, *port)
-
 
     def push_to_queue(queue: Queue, data: Dict):
         RedisResource.conn.rpush(queue.value, json.dumps(data))

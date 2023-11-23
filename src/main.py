@@ -1,7 +1,6 @@
 import src.db_services as _services
 
 from src.routers import users, orders
-from .redis import RedisResource
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -30,7 +29,9 @@ app.include_router(orders.router)
 
 @app.exception_handler(AuthJWTException)
 def authjwt_exception_handler(request: Request, exc: AuthJWTException):
-    return JSONResponse(status_code=exc.status_code, content={"detail": "Unauthorized access"})
+    return JSONResponse(
+        status_code=exc.status_code, content={"detail": "Unauthorized access"}
+    )
 
 
 @app.get("/")

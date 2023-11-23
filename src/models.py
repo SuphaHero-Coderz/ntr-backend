@@ -18,6 +18,7 @@ class UserCredentials(BaseModel):
     username: str
     password: str
 
+
 class OrderInformation(BaseModel):
     num_tokens: int
 
