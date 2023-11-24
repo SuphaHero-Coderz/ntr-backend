@@ -4,6 +4,7 @@ import enum
 from sqlmodel import Field, SQLModel, Relationship
 from typing import Optional, List
 from datetime import datetime
+from pydantic import BaseModel
 
 
 class OrderStatus(enum.Enum):
@@ -13,9 +14,13 @@ class OrderStatus(enum.Enum):
     complete = 3
 
 
-class UserCredentials:
+class UserCredentials(BaseModel):
     username: str
     password: str
+
+
+class OrderInformation(BaseModel):
+    num_tokens: int
 
 
 class User(SQLModel, table=True):
@@ -30,7 +35,7 @@ class User(SQLModel, table=True):
         return _hash.bcrypt.verify(password, self.hashed_password)
 
 
-class Order(SQLModel):
+class Order(SQLModel, table=True):
     __tablename__: str = "orders"
 
     id: Optional[int] = Field(default=None, primary_key=True)

@@ -1,0 +1,27 @@
+from src.redis import RedisResource as redis
+from src.redis import Queue
+
+from fastapi import APIRouter, Depends
+from fastapi_jwt_auth import AuthJWT
+from src.models import OrderInformation
+
+# Reference: IndominusByte's JWT In Cookies
+
+router = APIRouter(tags=["users"])
+
+
+@router.post("/create-order")
+async def create_order(
+    order: OrderInformation,
+    Authorize: AuthJWT = Depends(),
+):
+    Authorize.jwt_required()
+
+    survival_bag = {
+        "user_id": Authorize.get_jwt_subject(),
+        "num_tokens": order.num_tokens,
+    }
+
+    redis.push_to_queue(Queue.order_queue, survival_bag)
+
+    return {"message": "Order created"}
