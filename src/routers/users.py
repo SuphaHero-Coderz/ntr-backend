@@ -24,7 +24,7 @@ def get_config():
     return Settings()
 
 
-@router.post("/register")
+@router.post("/register", status_code=201)
 async def register(
     user: UserCredentials,
     Authorize: AuthJWT = Depends(),

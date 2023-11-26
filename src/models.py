@@ -29,6 +29,7 @@ class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str
     hashed_password: str
+    credits: Optional[int] = Field(default=100)
     orders: List["Order"] = Relationship(back_populates="user")
 
     def verify_password(self, password: str) -> bool:

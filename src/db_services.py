@@ -62,6 +62,23 @@ async def get_user_by_username(username: str, session: Session) -> User:
     return result
 
 
+async def get_user_by_id(id: int, session: Session) -> User:
+    """
+    Fetches a user from the database by id
+
+    Args:
+        id (int): id to query
+        session (Session): database session
+
+    Returns:
+        User: user object
+    """
+    query = select(User).where(User.id == id)
+    result = session.exec(query).first()
+
+    return result
+
+
 async def authenticate_user(user: UserCredentials, session: Session) -> bool:
     """
     Checks to see if a user's credentials are valid

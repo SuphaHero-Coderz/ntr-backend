@@ -10,3 +10,8 @@ fastapi-jwt-auth
 python-multipart
 cryptography
 sqlmodel
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation
+opentelemetry-instrumentation-fastapi
+opentelemetry-exporter-jaeger
