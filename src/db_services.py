@@ -1,4 +1,6 @@
 import src.database as _database
+import random
+import string
 
 from passlib.hash import bcrypt
 from sqlmodel import Session, select
@@ -45,6 +47,33 @@ async def create_user(user: UserCredentials, session: Session) -> User:
     return user_obj
 
 
+async def create_throwaway_user(session: Session) -> User:
+    """
+    Creates a throwaway user in case no credentials when creating order
+
+    Args:
+        session (Session): database session
+
+    Returns:
+        User: user object
+    """
+
+    def generate_random_string(length: int = 7) -> string:
+        return "".join(random.choices(string.ascii_uppercase, k=length))
+
+    user_obj = User(
+        username=generate_random_string(),
+        hashed_password=bcrypt.hash(generate_random_string()),
+        orders=[],
+    )
+
+    session.add(user_obj)
+    session.commit()
+    session.refresh(user_obj)
+
+    return user_obj
+
+
 async def get_user_by_username(username: str, session: Session) -> User:
     """
     Fetches a user from the database by username
@@ -73,6 +102,10 @@ async def get_user_by_id(id: int, session: Session) -> User:
     Returns:
         User: user object
     """
+    if id is None:
+        throwaway_user = await create_throwaway_user(session)
+        return throwaway_user
+
     query = select(User).where(User.id == id)
     result = session.exec(query).first()
 

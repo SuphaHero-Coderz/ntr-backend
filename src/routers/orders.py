@@ -22,12 +22,11 @@ async def create_order(
             status_code=422, detail="Number of tokens must be at least one."
         )
 
-    Authorize.jwt_required()
     user_id: int = Authorize.get_jwt_subject()
     user: User = await _services.get_user_by_id(user_id, session)
 
     survival_bag = {
-        "user_id": user_id,
+        "user_id": user.id,
         "user_credits": user.credits,
         "num_tokens": order.num_tokens,
     }
