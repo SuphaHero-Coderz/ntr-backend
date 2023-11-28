@@ -1,6 +1,6 @@
+import requests
+import json
 import src.db_services as _services
-from src.redis import RedisResource as redis
-from src.redis import Queue
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_jwt_auth import AuthJWT
@@ -25,11 +25,17 @@ async def create_order(
     user_id: int = Authorize.get_jwt_subject()
     user: User = await _services.get_user_by_id(user_id, session)
 
-    survival_bag = {
-        "user_id": user.id,
-        "user_credits": user.credits,
-        "num_tokens": order.num_tokens,
-    }
-    redis.push_to_queue(Queue.order_queue, survival_bag)
+    data = {"user_id": user.id, "num_tokens": order.num_tokens}
+
+    requests.post("http://order-handler/create-order", json=data)
 
     return {"message": "Order created"}
+
+
+@router.get("/get-orders")
+async def get_orders_for_user(user_id: int):
+    response = requests.get(
+        "http://order-handler/get-orders", params={"user_id": user_id}
+    )
+    orders = json.loads(response.content)
+    return orders
