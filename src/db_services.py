@@ -126,3 +126,17 @@ async def authenticate_user(user: UserCredentials, session: Session) -> bool:
     user = await get_user_by_username(user.username, session)
 
     return user and user.verify_password(user.password)
+
+
+async def add_credits(user_id: int, num_credits: int, session: Session) -> None:
+    user = await get_user_by_id(user_id, session)
+    user.credits += num_credits
+    session.add(user)
+    session.commit()
+
+
+async def deduct_credits(user_id: int, num_credits: int, session: Session) -> None:
+    user = await get_user_by_id(user_id, session)
+    user.credits -= num_credits
+    session.add(user)
+    session.commit()

@@ -1,9 +1,7 @@
 import passlib.hash as _hash
-import enum
 
-from sqlmodel import Field, SQLModel, Relationship
-from typing import Optional, List
-from datetime import datetime
+from sqlmodel import Field, SQLModel
+from typing import Optional
 from pydantic import BaseModel
 
 
