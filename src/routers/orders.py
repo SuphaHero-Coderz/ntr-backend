@@ -25,7 +25,11 @@ async def create_order(
     user_id: int = Authorize.get_jwt_subject()
     user: User = await _services.get_user_by_id(user_id, session)
 
-    data = {"user_id": user.id, "num_tokens": order.num_tokens}
+    data = {
+        "user_id": user.id,
+        "num_tokens": order.num_tokens,
+        "user_credits": user.credits,
+    }
 
     requests.post("http://order-handler/create-order", json=data)
 
