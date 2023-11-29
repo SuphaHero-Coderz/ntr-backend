@@ -10,3 +10,6 @@ fastapi-jwt-auth
 python-multipart
 cryptography
 sqlmodel
+opentelemetry-distro==0.38b0
+opentelemetry-exporter-otlp==1.17.0
+opentelemetry-instrumentation-fastapi==0.38b0
