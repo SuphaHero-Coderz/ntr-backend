@@ -5,9 +5,11 @@ import json
 from enum import Enum
 from dotenv import load_dotenv
 from typing import Dict
+from opentelemetry.instrumentation.redis import RedisInstrumentor
 
 load_dotenv()
 
+RedisInstrumentor().instrument()
 
 class Queue(Enum):
     order_queue = f'queue:{os.getenv("ORDER_QUEUE_NAME")}'
