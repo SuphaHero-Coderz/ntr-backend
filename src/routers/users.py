@@ -114,6 +114,60 @@ async def refresh(Authorize: AuthJWT = Depends()):
     return {"message": "Token refreshed"}
 
 
+@router.get("/get-user")
+async def get_user(user_id: int, session: Session = Depends(get_session)):
+    user = await _services.get_user_by_id(user_id, session)
+    return user
+
+
+@router.put("/add-credits")
+async def add_credits(
+    user_id: int,
+    num_credits: int,
+    Authorize: AuthJWT = Depends(),
+    session: Session = Depends(get_session),
+):
+    """
+    Adds credits to the user's balance
+
+    Args:
+        user_id (int): id to add
+        num_credits (int): credits to add
+        Authorize (AuthJWT, optional): authentication handler. Defaults to Depends().
+
+    Returns: response object
+    """
+    await _services.add_credits(
+        user_id=user_id, num_credits=num_credits, session=session
+    )
+
+    return {"message": "Added credits"}
+
+
+@router.put("/deduct-credits")
+async def deduct_credits(
+    user_id: int,
+    num_credits: int,
+    Authorize: AuthJWT = Depends(),
+    session: Session = Depends(get_session),
+):
+    """
+    Deducts credits from the user's balance
+
+    Args:
+        user_id (int): id to add
+        num_credits (int): credits to add
+        Authorize (AuthJWT, optional): authentication handler. Defaults to Depends().
+
+    Returns: response object
+    """
+    await _services.deduct_credits(
+        user_id=user_id, num_credits=num_credits, session=session
+    )
+
+    return {"message": "Deducted credits"}
+
+
 @router.delete("/logout")
 async def logout(Authorize: AuthJWT = Depends()):
     """
