@@ -123,9 +123,10 @@ async def authenticate_user(user: UserCredentials, session: Session) -> bool:
     Returns:
         bool: whether or not user's credentials valid
     """
-    user = await get_user_by_username(user.username, session)
+    username, password = user.username, user.password
+    user = await get_user_by_username(username, session)
 
-    return user and user.verify_password(user.password)
+    return user and user.verify_password(password)
 
 
 async def add_credits(user_id: int, num_credits: int, session: Session) -> None:

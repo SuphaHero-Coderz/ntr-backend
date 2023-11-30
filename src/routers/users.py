@@ -79,14 +79,16 @@ async def login(
     Returns: response object
     """
     credentials_valid = await _services.authenticate_user(
-        username=user.username, password=user.password, session=session
+        user=user, session=session
     )
 
     if not credentials_valid:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
-    access_token = Authorize.create_access_token(subject=user.username)
-    refresh_token = Authorize.create_refresh_token(subject=user.username)
+    user = await _services.get_user_by_username(user.username)
+
+    access_token = Authorize.create_access_token(subject=user.id)
+    refresh_token = Authorize.create_refresh_token(subject=user.id)
 
     Authorize.set_access_cookies(access_token)
     Authorize.set_refresh_cookies(refresh_token)

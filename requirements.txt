@@ -15,3 +15,5 @@ opentelemetry-exporter-otlp==1.17.0
 opentelemetry-instrumentation-fastapi==0.38b0
 opentelemetry-instrumentation-redis==0.38b0
 requests
+pytest
+httpx

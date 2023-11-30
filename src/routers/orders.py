@@ -37,10 +37,18 @@ async def create_order(
     return {"message": "Order created"}
 
 
-@router.get("/get-orders")
+@router.get("/get-orders", status_code=200)
 async def get_orders_for_user(user_id: int):
     response = requests.get(
         "http://order-handler/get-orders", params={"user_id": user_id}
+    )
+    orders = json.loads(response.content)
+    return orders
+
+@router.get("/get-all-orders", status_code=200)
+async def get_all_orders():
+    response = requests.get(
+        "http://order-handler/get-all-orders"
     )
     orders = json.loads(response.content)
     return orders
