@@ -3,6 +3,7 @@ import passlib.hash as _hash
 from sqlmodel import Field, SQLModel
 from typing import Optional
 from pydantic import BaseModel
+from pydantic import Field as PyField
 
 
 class UserCredentials(BaseModel):
@@ -11,7 +12,11 @@ class UserCredentials(BaseModel):
 
 
 class OrderInformation(BaseModel):
-    num_tokens: int
+    num_tokens: int = PyField(gt=0)
+    order_fail: bool = PyField(default=False)
+    payment_fail: bool = PyField(default=False)
+    inventory_fail: bool = PyField(default=False)
+    delivery_fail: bool = PyField(default=False)
 
 
 class User(SQLModel, table=True):

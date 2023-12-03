@@ -30,6 +30,10 @@ async def create_order(
         "user_id": user.id,
         "num_tokens": order.num_tokens,
         "user_credits": user.credits,
+        "order_fail": order.order_fail,
+        "payment_fail": order.payment_fail,
+        "inventory_fail": order.inventory_fail,
+        "delivery_fail": order.delivery_fail,
     }
 
     requests.post("http://order-handler/create-order", json=data)
