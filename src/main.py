@@ -1,11 +1,29 @@
-import src.db_services as _services
+import logging
 
-from src.routers import users, orders
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth.exceptions import AuthJWTException
+from opentelemetry._logs import set_logger_provider
+from opentelemetry.exporter.otlp.proto.grpc._log_exporter import (
+    OTLPLogExporter,
+)
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
+
+import src.db_services as _services
+from src.routers import users, orders
+
+logger_provider = LoggerProvider()
+set_logger_provider(logger_provider)
+
+exporter = OTLPLogExporter(insecure=True)
+logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
+handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
+
+# Attach OTLP handler to root logger
+logging.getLogger().addHandler(handler)
 
 app = FastAPI()
 
@@ -37,3 +55,5 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+logger_provider.shutdown()
