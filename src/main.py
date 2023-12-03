@@ -25,7 +25,6 @@ handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
 # Attach OTLP handler to root logger
 logging.getLogger().addHandler(handler)
 
-
 app = FastAPI()
 
 _services.create_database()
