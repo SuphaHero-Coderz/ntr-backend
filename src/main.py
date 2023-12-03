@@ -6,8 +6,6 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth.exceptions import AuthJWTException
-from opentelemetry import trace
-from opentelemetry.trace.status import Status, StatusCode
 
 app = FastAPI()
 

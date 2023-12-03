@@ -22,7 +22,7 @@ async def create_order(
             status_code=422, detail="Number of tokens must be at least one."
         )
 
-    user_id: int = Authorize.get_jwt_subject() 
+    user_id: int = Authorize.get_jwt_subject()
     user: User = await _services.get_user_by_id(user_id, session)
 
     data = {

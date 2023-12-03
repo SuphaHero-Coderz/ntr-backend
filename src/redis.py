@@ -11,6 +11,7 @@ load_dotenv()
 
 RedisInstrumentor().instrument()
 
+
 class Queue(Enum):
     order_queue = f'queue:{os.getenv("ORDER_QUEUE_NAME")}'
     payment_queue = f'queue:{os.getenv("PAYMENT_QUEUE_NAME")}'
