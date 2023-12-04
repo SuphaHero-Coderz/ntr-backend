@@ -56,4 +56,5 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 def read_root():
     return {"Hello": "World"}
 
+
 logger_provider.shutdown()

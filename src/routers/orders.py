@@ -48,3 +48,12 @@ async def get_orders_for_user(user_id: int):
     )
     orders = json.loads(response.content)
     return orders
+
+
+@router.get("/get-order")
+async def get_order(order_id: int):
+    response = requests.get(
+        "http://order-handler/get-order", params={"order_id": order_id}
+    )
+    order = json.loads(response.content)
+    return order
